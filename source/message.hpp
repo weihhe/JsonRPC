@@ -1,3 +1,4 @@
+#pragma once
 #include "detail.hpp"
 #include "fields.hpp"
 #include "abstract.hpp"
