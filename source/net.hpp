@@ -1,3 +1,4 @@
+#pragma once
 #include <muduo/net/TcpServer.h>
 #include <muduo/net/EventLoop.h>
 #include <muduo/net/TcpConnection.h>
@@ -11,6 +12,7 @@
 #include "message.hpp"
 #include <mutex>
 #include <unordered_map>
+
 
 namespace rpc
 {
@@ -161,7 +163,7 @@ namespace rpc
         }
         virtual bool connected() override
         {
-            _conn->connected();
+            return _conn->connected();
         }
 
     private:
@@ -330,7 +332,7 @@ namespace rpc
                 ELOG("连接已断开！");
                 return false;
             }
-            _conn->send(msg);
+            _conn->send(msg);//多态send
         }
         virtual BaseConnection::ptr connection() override
         {

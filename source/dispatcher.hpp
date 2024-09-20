@@ -1,4 +1,4 @@
-
+#pragma once
 #include "net.hpp"
 #include "message.hpp"
 
@@ -13,8 +13,10 @@ namespace rpc {
     class CallbackT : public Callback{
         public:
             using ptr = std::shared_ptr<CallbackT<T>>;
-            //using MessageCallback = std::function<void(const BaseConnection::ptr&, BaseMessage::ptr&)>;
-            using MessageCallback = std::function<void(const BaseConnection::ptr &conn, std::shared_ptr<T> &msg)>;/
+            //using MessageCallback = std::function<void(const BaseConnection::ptr&, BaseMessage::ptr&)>; 之前
+            //onTopicResponse(const rpc::BaseConnection::ptr &conn, rpc::BaseMessage::ptr &msg)现在
+
+            using MessageCallback = std::function<void(const BaseConnection::ptr &conn, std::shared_ptr<T> &msg)>;
             CallbackT(const MessageCallback &handler):_handler(handler) { }
             void onMessage(const BaseConnection::ptr &conn, BaseMessage::ptr &msg) override {
                 //包装消息
@@ -27,7 +29,7 @@ namespace rpc {
     class Dispatcher {
         public:
             using ptr = std::shared_ptr<Dispatcher>;
-            template<typename T>
+            template<typename T> 
             void registerHandler(MType mtype, const typename CallbackT<T>::MessageCallback &handler) {//注册消息类型和回调函数
                 std::unique_lock<std::mutex> lock(_mutex);
                 auto cb = std::make_shared<CallbackT<T>>(handler);//将参数为T的回调函数和conn包装起来
@@ -42,7 +44,7 @@ namespace rpc {
                     return it->second->onMessage(conn, msg);
                 }
                 //没有找到指定类型的处理回调--因为客户端和服务端都是我们自己设计的，因此不可能出现这种情况
-                ELOG("收到未知类型的消息: %d！", msg->mtype());
+                ELOG("收到未知类型的消息: %d!", msg->mtype());
                 conn->shutdown();
             }
         private:

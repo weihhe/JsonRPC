@@ -23,13 +23,13 @@ namespace rpc{
 #define LDEFAULT LINF
   
 // 末尾的换行\是转义，让其视为同一行。设置不定参数，获取当前时间并打印日志
-#define LOG(level,format, ...) {\  
+#define LOG(level,format, ...) {\
     if(level >= LDEFAULT){\
-    time_t t = time(NULL);\  
-    struct tm *lt = localtime(&t);\  
-    char time_tmp[32] = { 0 };\  
-    strftime(time_tmp, sizeof(time_tmp), "%m-%d %H:%M:%S", lt);\  
-    printf("[%s]-[%s:%d] " format "\n", time_tmp, __FILE__, __LINE__, ##__VA_ARGS__);\ 
+    time_t t = time(NULL);\
+    struct tm *lt = localtime(&t);\
+    char time_tmp[32] = { 0 };\
+    strftime(time_tmp, sizeof(time_tmp), "%m-%d %H:%M:%S", lt);\
+    printf("[%s]-[%s:%d] " format "\n", time_tmp, __FILE__, __LINE__, ##__VA_ARGS__);\
     }\
 }
 /*输出等级控制 */
