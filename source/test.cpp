@@ -200,59 +200,61 @@
 //     client->shutdown();
 //     return 0;
 // }
-#include "message.hpp"
-#include <memory>
-#include <thread>
-#include "net.hpp"
-#include "dispatcher.hpp"
-#include "abstract.hpp"
+// #include "message.hpp"
+// #include <memory>
+// #include <thread>
+// #include "net.hpp"
+// #include "dispatcher.hpp"
+// #include "abstract.hpp"
 
-void onRpcResponse(const rpc::BaseConnection::ptr& conn, rpc::RpcResponse::ptr& msg)
-{
-    std::cout << "收到Rpc响应";
-    std::string body = msg->serialize();
-    std::cout << body << std::endl;
-}
+// void onRpcResponse(const rpc::BaseConnection::ptr& conn, rpc::RpcResponse::ptr& msg)
+// {
+//     std::cout << "收到Rpc响应";
+//     std::string body = msg->serialize();
+//     std::cout << body << std::endl;
+// }
 
-void onTopicResponse(const rpc::BaseConnection::ptr& conn, rpc::TopicResponse::ptr& msg)
-{
-    std::cout << "收到Topic响应";
-    std::string body = msg->serialize();
-    std::cout << body << std::endl;
-}
+// void onTopicResponse(const rpc::BaseConnection::ptr& conn, rpc::TopicResponse::ptr& msg)
+// {
+//     std::cout << "收到Topic响应";
+//     std::string body = msg->serialize();
+//     std::cout << body << std::endl;
+// }
 
-int main()
-{
-    auto dispather_1 = std::make_shared<rpc::Dispatcher>();//构造一个智能指针对象
-    dispather_1->registerHandler<rpc::RpcResponse>(rpc::MType::RSP_RPC, onRpcResponse);         // 注册映射关系
-    dispather_1->registerHandler<rpc::TopicResponse>(rpc::MType::RSP_TOPIC, onTopicResponse); // 注册映射关系
+// int main()
+// {
+//     auto dispather_1 = std::make_shared<rpc::Dispatcher>();//构造一个智能指针对象
+//     dispather_1->registerHandler<rpc::RpcResponse>(rpc::MType::RSP_RPC, onRpcResponse);         // 注册映射关系
+//     dispather_1->registerHandler<rpc::TopicResponse>(rpc::MType::RSP_TOPIC, onTopicResponse); // 注册映射关系
 
-    auto client = rpc::ClientFactory::create("127.0.0.1", 9999);
+//     auto client = rpc::ClientFactory::create("127.0.0.1", 9999);
 
-    // 将onMessage和对象绑定起来
-    auto message_cb = std::bind(&rpc::Dispatcher::onMessage, dispather_1.get(),
-                                std::placeholders::_1, std::placeholders::_2);
-    client->setMessageCallback(message_cb); // 将onMessage接口设置给回调函数
-    client->connect();
+//     // 将onMessage和对象绑定起来
+//     auto message_cb = std::bind(&rpc::Dispatcher::onMessage, dispather_1.get(),
+//                                 std::placeholders::_1, std::placeholders::_2);
+//     client->setMessageCallback(message_cb); // 将onMessage接口设置给回调函数
+//     client->connect();
 
-    auto rpc_req = rpc::MessageFactory::create<rpc::RpcRequest>();
-    rpc_req->setId("1111");
-    rpc_req->setMType(rpc::MType::REQ_RPC);
-    rpc_req->setMethod("Add");
-    Json::Value param;
-    param["num1"] = 11;
-    param["num2"] = 22;
-    rpc_req->setParams(param);
-    client->send(rpc_req);
+//     auto rpc_req = rpc::MessageFactory::create<rpc::RpcRequest>();
+//     rpc_req->setId("1111");
+//     rpc_req->setMType(rpc::MType::REQ_RPC);
+//     rpc_req->setMethod("Add");
+//     Json::Value param;
+//     param["num1"] = 11;
+//     param["num2"] = 22;
+//     rpc_req->setParams(param);
+//     client->send(rpc_req);
 
-    auto topic_req = rpc::MessageFactory::create<rpc::TopicRequest>();
-    topic_req->setId("1111");
-    topic_req->setMType(rpc::MType::REQ_TOPIC);
-    topic_req->setOptype(rpc::TopicOptype::TOPIC_CREATE);
-    topic_req->setTopicKey("News");
-    client->send(topic_req);
+//     auto topic_req = rpc::MessageFactory::create<rpc::TopicRequest>();
+//     topic_req->setId("1111");
+//     topic_req->setMType(rpc::MType::REQ_TOPIC);
+//     topic_req->setOptype(rpc::TopicOptype::TOPIC_CREATE);
+//     topic_req->setTopicKey("News");
+//     client->send(topic_req);
     
-    std::this_thread::sleep_for(std::chrono::seconds(100));
-    client->shutdown();
-    return 0;
-}
+//     std::this_thread::sleep_for(std::chrono::seconds(100));
+//     client->shutdown();
+//     return 0;
+// }
+/*Test*/
+/*Test*/

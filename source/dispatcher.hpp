@@ -20,7 +20,7 @@ namespace rpc {
             CallbackT(const MessageCallback &handler):_handler(handler) { }
             void onMessage(const BaseConnection::ptr &conn, BaseMessage::ptr &msg) override {
                 //包装消息
-                auto type_msg = std::dynamic_pointer_cast<T>(msg);
+                auto type_msg = std::dynamic_pointer_cast<T>(msg);//获取到具体的msg类型
                 _handler(conn, type_msg);
             }
         private:
@@ -33,7 +33,7 @@ namespace rpc {
             void registerHandler(MType mtype, const typename CallbackT<T>::MessageCallback &handler) {//注册消息类型和回调函数
                 std::unique_lock<std::mutex> lock(_mutex);
                 auto cb = std::make_shared<CallbackT<T>>(handler);//将参数为T的回调函数和conn包装起来
-                _handlers.insert(std::make_pair(mtype, cb));//根据消息类型，找到
+                _handlers.insert(std::make_pair(mtype, cb));//根据消息类型，找到对应的回调函数
             }
             //using MessageCallback = std::function<void(const BaseConnection::ptr&, BaseMessage::ptr&)>;
             void onMessage(const BaseConnection::ptr &conn, BaseMessage::ptr &msg) {

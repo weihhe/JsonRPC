@@ -73,6 +73,7 @@ namespace rpc{
     };
     class UUID
     {
+    public:
         static std::string generateUUID()
         {
             std::stringstream ss; // 用于存放最终转换成的16进制UUID字符串
